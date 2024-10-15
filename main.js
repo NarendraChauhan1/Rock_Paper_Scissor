@@ -1,4 +1,5 @@
-Hey this is my project's code 
+//Create a function which return random strings 'rock','paper' and 'scissor'.
+
 function getComputerChoice() {
   let max = 3;
   let min = 1;
@@ -12,6 +13,9 @@ function getComputerChoice() {
       return "Scissor";
   }
 }
+
+//Create a function to get the human choice with prompt.
+
 function getHumanChoice() {
   let userInput = prompt("What's your move from Rock,Paper and Scissor ?");
   switch (userInput.toLowerCase()) {
@@ -25,11 +29,19 @@ function getHumanChoice() {
       return "Invalid choice. Please choose Rock, Paper, or Scissor.";
   }
 }
+
+//Create a var in global scope to track scores.
+
 let humanScore = 0;
+
 let computerScore = 0;
+
+//Function playRound(humanChoice, computerChoice) → Normalize humanChoice, Compare choices, Log winner announcement ("You win!" / "You lose!" / "It's a tie!"), Increment humanScore or computerScore accordingly.
+
 function playRound(humanChoice, computerChoice) {
   let human = humanChoice();
   let computer = computerChoice();
+
   if (human === computer) {
     console.log("It's a tie");
   } else if (
@@ -48,11 +60,12 @@ function playRound(humanChoice, computerChoice) {
     return humanScore++;
   }
 }
+
 function playGame() {
   for (let i = 0; i < 5; i++) {
     playRound(getHumanChoice, getComputerChoice);
   }
-  if (computerScore < humanScore) {
+  if (humanScore > computerScore) {
     console.log(
       `You won! your score is ${humanScore} and cpu score is ${computerScore}`
     );
@@ -70,4 +83,5 @@ function playGame() {
     return "Match ties! Try again";
   }
 }
+
 playGame();
