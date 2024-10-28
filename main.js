@@ -1,5 +1,17 @@
-//Create a function which return random strings 'rock','paper' and 'scissor'.
+// Global Variables
+let humanScore = 0;
+let computerScore = 0;
 
+// DOM Element Selections
+const result = document.querySelector("h2");
+const finalResult = document.querySelector("h4");
+const humanSkore = document.querySelector(".HumanScore");
+const computerSkore = document.querySelector(".ComputerScore");
+const button = document.querySelectorAll("button");
+
+// Functions
+
+// Function to generate a random computer choice
 function getComputerChoice() {
   let max = 3;
   let min = 1;
@@ -14,74 +26,55 @@ function getComputerChoice() {
   }
 }
 
-//Create a function to get the human choice with prompt.
-
-function getHumanChoice() {
-  let userInput = prompt("What's your move from Rock,Paper and Scissor ?");
-  switch (userInput.toLowerCase()) {
-    case "rock":
-      return "Rock";
-    case "paper":
-      return "Paper";
-    case "scissor":
-      return "Scissor";
-    default:
-      return "Invalid choice. Please choose Rock, Paper, or Scissor.";
+// Function to display results and handle the final result if a score of 5 is reached
+function resultGiver(string) {
+  result.textContent = string;
+  // Display initial scores
+  humanSkore.textContent = humanScore;
+  computerSkore.textContent = computerScore;
+  if (humanScore === 5 || computerScore === 5) {
+    if (humanScore > computerScore) {
+      finalResult.textContent = `You won! your score is ${humanScore} and cpu score is ${computerScore}`;
+    } else if (humanScore < computerScore) {
+      finalResult.textContent = `You lost the game! your score is ${humanScore} and cpu score is ${computerScore}`;
+    } else {
+      finalResult.textContent = "Match ties! Try again";
+    }
+    humanScore = 0;
+    computerScore = 0;
   }
 }
 
-//Create a var in global scope to track scores.
-
-let humanScore = 0;
-
-let computerScore = 0;
-
-//Function playRound(humanChoice, computerChoice) → Normalize humanChoice, Compare choices, Log winner announcement ("You win!" / "You lose!" / "It's a tie!"), Increment humanScore or computerScore accordingly.
-
+// Function to play a single round
 function playRound(humanChoice, computerChoice) {
-  let human = humanChoice();
-  let computer = computerChoice();
+  let human = humanChoice;
+  let computer = computerChoice;
 
   if (human === computer) {
-    console.log("It's a tie");
+    resultGiver("It's a tie");
   } else if (
     (human === "Rock" && computer === "Paper") ||
     (human === "Paper" && computer === "Scissor") ||
     (human === "Scissor" && computer === "Rock")
   ) {
-    console.log(`You lose! ${computer} beats ${human}`);
-    return computerScore++;
+    computerScore++;
+    resultGiver(`You lose! ${computer} beats ${human}`);
   } else if (
     (human === "Rock" && computer === "Scissor") ||
     (human === "Paper" && computer === "Rock") ||
     (human === "Scissor" && computer === "Paper")
   ) {
-    console.log(`You won! ${human} beats ${computer}`);
-    return humanScore++;
+    humanScore++;
+    resultGiver(`You won! ${human} beats ${computer}`);
   }
 }
 
-function playGame() {
-  for (let i = 0; i < 5; i++) {
-    playRound(getHumanChoice, getComputerChoice);
-  }
-  if (humanScore > computerScore) {
-    console.log(
-      `You won! your score is ${humanScore} and cpu score is ${computerScore}`
-    );
-    humanScore = 0;
-    computerScore = 0;
-  } else if (humanScore < computerScore) {
-    console.log(
-      `You lost the game! your score is ${humanScore} and cpu score is ${computerScore}`
-    );
-    humanScore = 0;
-    computerScore = 0;
-  } else {
-    humanScore = 0;
-    computerScore = 0;
-    return "Match ties! Try again";
-  }
-}
+// Event Listeners
 
-playGame();
+// Listen for each button click to play a round
+button.forEach((el) => {
+  el.addEventListener("click", () => {
+    finalResult.textContent = "";
+    playRound(el.textContent, getComputerChoice());
+  });
+});
